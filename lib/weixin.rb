@@ -2,21 +2,26 @@ require 'digest/sha1'
 
 class Weixin
 
-    def initialize(app, app_token)
+    def initialize(app, app_token, path)
         @app = app
         @app_token = app_token
+        @path = path
     end
 
     def call(env)
-        @req = Rack::Request.new(env)
-        return invalid_request! unless request_is_valid?
-        return [
-            200, 
-            { 'Content-type' => 'text/html', 'Content-length' => @req.params['echostr'].length.to_s }, 
-            [ @req.params['echostr'] ]
-        ] if @req.get?
-        status, headers, body = @app.call(env)
-        [status, headers, body]
+        if @path == env['PATH_INFO'].to_s && ['GET', 'POST'].include?(env['REQUEST_METHOD'])
+            @req = Rack::Request.new(env)
+            return invalid_request! unless request_is_valid?
+            return [
+                200, 
+                { 'Content-type' => 'text/html', 'Content-length' => @req.params['echostr'].length.to_s }, 
+                [ @req.params['echostr'] ]
+            ] if @req.get?
+            status, headers, body = @app.call(env)
+            [status, headers, body]
+        else
+            @app.call(env)
+        end
     end
 
     def invalid_request!
