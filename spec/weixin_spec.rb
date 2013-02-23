@@ -1,9 +1,9 @@
 require 'rspec'
 require 'rack/mock'
 require 'digest/sha1'
-require 'weixin'
+require 'weixin/middleware'
 
-describe "Weixin" do
+describe "Weixin::Middleware" do
 
     #include Rack::Test:Methods
 
@@ -14,7 +14,7 @@ describe "Weixin" do
     end
 
     def middleware()
-        Weixin.new @app, @app_token, @context_path
+        Weixin::Middleware.new @app, @app_token, @context_path
     end
 
     def mock_env(echostr, token = @app_token, path = '/')

@@ -1,4 +1,7 @@
-Copyright (c) 2008 The Committers
+rack-weixin
+===========
+
+Weixin functions(Request Validation, Message Parser and Generator) for Ruby Web AppsCopyright (c) 2008 The Committers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to
