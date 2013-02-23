@@ -1,4 +1,6 @@
-module 'Weixin'
+require 'roxml'
+
+module Weixin
 
     class Message
         include ROXML
@@ -21,9 +23,9 @@ module 'Weixin'
         xml_accessor :pic_url, :cdata => true
     end
 
-    class GeoMessage < Message
-        xml_accessor :location_x, :as => Float
-        xml_accessor :location_y, :as => Float
+    class LocationMessage < Message
+        xml_accessor :location_x, :as => Float, :from => 'Location_X'
+        xml_accessor :location_y, :as => Float, :from => 'Location_Y'
         xml_accessor :scale, :as => Integer
         xml_accessor :label, :cdata => true
     end
