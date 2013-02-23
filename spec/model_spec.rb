@@ -69,4 +69,32 @@ describe 'weixin/model' do
 
     end
 
+    context 'Weixin::ReplyMessage' do
+
+        it 'is a text reply message' do
+            msg = Weixin::TextReplyMessage.new
+            msg.to_user_name = 'to'
+            msg.from_user_name = 'from'
+            msg.content = 'blah'
+            msg.msg_type.should == 'text'
+        end
+
+        it 'is a news reply message' do
+            msg = Weixin::NewsReplyMessage.new
+            msg.to_user_name = 'to'
+            msg.from_user_name = 'from'
+            item1 = Weixin::Item.new
+            item1.title = 'title1'
+            item1.description = 'blah'
+            item2 = Weixin::Item.new
+            item2.title = 'title2'
+            item2.description = 'blah blah'
+            msg.articles = [item1, item2]
+            msg.article_count = 2
+            msg.msg_type.should == 'news'
+            #puts msg.to_xml
+        end
+
+    end
+
 end

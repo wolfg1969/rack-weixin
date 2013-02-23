@@ -4,6 +4,8 @@ module Weixin
 
     class Middleware
 
+        WEIXIN_MESSAGE  = 'weixin.message'.freeze
+
         def initialize(app, app_token, path)
             @app = app
             @app_token = app_token

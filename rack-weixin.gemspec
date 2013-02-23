@@ -12,8 +12,10 @@ Gem::Specification.new do |s|
     s.files = `git ls-files`.split("\n")
     s.test_files = s.files.select {|path| path =~ /^spec\/.*_spec\.rb/}
 
-    s.add_dependency 'rack', '>= 0.9.1'
-    s.add_development_dependency 'rspec', '>= 2.0.1'
+    s.add_dependency 'rack'
+    s.add_dependency 'roxml'
+    s.add_development_dependency 'rake'
+    s.add_development_dependency 'rspec', '>= 2.0.0'
 
     s.homepage = 'https://github.com/wolfg1969/rack-weixin'
     s.require_paths = %w[lib]
