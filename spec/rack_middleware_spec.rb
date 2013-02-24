@@ -1,11 +1,13 @@
 require 'rspec'
+require 'rack'
+require 'rack/test'
 require 'rack/mock'
 require 'digest/sha1'
 require 'weixin/middleware'
 
 describe "Weixin::Middleware" do
 
-    #include Rack::Test:Methods
+    include Rack::Test::Methods
 
     before(:all) do
         @app = lambda { |env| [200, { 'Content-Type' => 'text/plain' }, ['hello']] }
@@ -31,7 +33,7 @@ describe "Weixin::Middleware" do
         echostr = '123'
         status, headers, body = app.call mock_env(echostr, @app_token, '/not_weixin_app')
         status.should eq(200)
-        body.should_not eq([echostr])
+        body.should_not == [echostr]
     end
 
     it 'is valid weixin request' do
@@ -39,14 +41,14 @@ describe "Weixin::Middleware" do
         echostr = '123'
         status, headers, body = app.call mock_env(echostr)
         status.should eq(200)
-        body.should eq([echostr])
+        body.should == [echostr]
     end
 
     it 'is invalid weixin request' do
         app = middleware
         status, headers, body = app.call mock_env('123', 'wrong_token')
         status.should eq(401)
-        body.should eq([])
+        body.should == []
     end
 
 end
