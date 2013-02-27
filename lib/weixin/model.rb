@@ -1,109 +1,146 @@
+# -*- encoding : utf-8 -*-
 require 'roxml'
+require 'multi_xml'
+require 'ostruct'
 
 module Weixin
 
     class Message
-        include ROXML
-        xml_name :xml
-        xml_convention :camelcase
 
-        xml_reader :to_user_name, :cdata => true
-        xml_reader :from_user_name, :cdata => true
-        xml_reader :create_time, :as => Integer
-        xml_reader :msg_type, :cdata => true
-        xml_reader :msg_id, :as => Integer
+        def initialize(hash)
+            @source = OpenStruct.new(hash) 
+        end
+
+        def method_missing(method, *args, &block)
+            @source.send(method, *args, &block)
+        end
+
+        def CreateTime
+            @source.CreateTime.to_i
+        end
+
+        def MsgId
+            @source.MsgId.to_i
+        end
+
+        def Message.factory(xml)
+            hash = MultiXml.parse(xml)['xml']
+            case hash['MsgType']
+            when 'text'
+                TextMessage.new(hash)
+            when 'image'
+                ImageMessage.new(hash)
+            when 'location'
+                LocationMessage.new(hash)
+            when 'link'
+                LinkMessage.new(hash)
+            when 'event'
+                EventMessage.new(hash)
+            else
+                raise ArgumentError, 'Unknown Message'
+            end
+        end
+
+    end
+
+    TextMessage = Class.new(Message)
+    ImageMessage = Class.new(Message)
+    LinkMessage = Class.new(Message)
+
+    class LocationMessage < Message
+
+        def Location_X
+            @source.Location_X.to_f
+        end
+
+        def Location_Y
+            @source.Location_Y.to_f
+        end
+
+        def Scale
+            @source.Scale.to_i
+        end
+    end
+
+    class EventMessage < Message
+        
+        def Latitude
+            @source.Latitude.to_f
+        end
+
+        def Longitude
+            @source.Longitude.to_f
+        end
+
+        def Precision
+            @source.Precision.to_f
+        end
     end
 
     class ReplyMessage
         include ROXML
         xml_name :xml
-        xml_convention :camelcase
+        #xml_convention :camelcase
 
-        xml_accessor :to_user_name, :cdata => true
-        xml_accessor :from_user_name, :cdata => true
-        xml_reader :create_time, :as => Integer
-        xml_reader :msg_type, :cdata => true
-        xml_accessor :func_flag, :as => Integer
+        xml_accessor :ToUserName, :cdata => true
+        xml_accessor :FromUserName, :cdata => true
+        xml_reader :CreateTime, :as => Integer
+        xml_reader :MsgType, :cdata => true
+        xml_accessor :FuncFlag, :as => Integer
 
         def initialize
-            @create_time = Time.now.to_i
-            @func_flag = 0
+            @CreateTime = Time.now.to_i
+            @FuncFlag = 0
+        end
+
+        def to_xml
+           super.to_xml(:encoding => 'UTF-8', :indent => 0, :save_with => 0)
         end
     end
 
-    class TextMessage < Message
-        xml_reader :content, :cdata => true
-    end
-
-    class ImageMessage < Message
-        xml_reader :pic_url, :cdata => true
-    end
-
-    class LocationMessage < Message
-        xml_reader :location_x, :as => Float, :from => 'Location_X'
-        xml_reader :location_y, :as => Float, :from => 'Location_Y'
-        xml_reader :scale, :as => Integer
-        xml_reader :label, :cdata => true
-    end
-
-    class LinkMessage < Message
-        xml_reader :title, :cdata => true
-        xml_reader :description, :cdata => true
-        xml_reader :url, :cdata => true
-    end
-
-    class EventMessage < Message
-        xml_reader :event, :cdata => true
-        xml_reader :latitude, :as => Float
-        xml_reader :longitude, :as => Float
-        xml_reader :presision, :as => Float
-    end
-
     class TextReplyMessage < ReplyMessage
-        xml_accessor :content, :cdata => true
+        xml_accessor :Content, :cdata => true
 
         def initialize
             super
-            @msg_type = 'text'
+            @MsgType = 'text'
         end
     end
 
     class Music
         include ROXML
-        xml_convention :camelcase
 
-        xml_accessor :title, :cdata => true
-        xml_accessor :description, :cdata => true
-        xml_accessor :music_url, :cdata => true
-        xml_accessor :hq_music_url, :cdata => true, :from => 'HQMusicUrl'
+        xml_accessor :Title, :cdata => true
+        xml_accessor :Description, :cdata => true
+        xml_accessor :MusicUrl, :cdata => true
+        xml_accessor :HQMusicUrl, :cdata => true
     end
 
     class MusicReplyMessage < ReplyMessage
-        xml_accessor :music, :as => Music
+        xml_accessor :Music, :as => Music
 
         def initialize
             super
-            @msg_type = 'music'
+            @MsgType = 'music'
         end
     end
 
     class Item
         include ROXML
-        xml_convention :camelcase
 
-        xml_accessor :title, :cdata => true
-        xml_accessor :description, :cdata => true
-        xml_accessor :pic_url, :cdata => true
-        xml_accessor :url, :cdata => true
+        xml_accessor :Title, :cdata => true
+        xml_accessor :Description, :cdata => true
+        xml_accessor :PicUrl, :cdata => true
+        xml_accessor :Url, :cdata => true
     end
 
     class NewsReplyMessage < ReplyMessage
-        xml_accessor :article_count, :as => Integer
-        xml_accessor :articles, :as => [Item], :in => 'Articles', :from => 'Item'
+        xml_accessor :ArticleCount, :as => Integer
+        xml_accessor :Articles, :as => [Item], :in => 'Articles', :from => 'Item'
 
         def initialize
             super
-            @msg_type = 'news'
+            @MsgType = 'news'
         end
     end
 end

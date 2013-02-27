@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'rspec'
 require 'weixin/model'
 
@@ -5,7 +6,7 @@ describe 'weixin/model' do
 
     context 'Weixin:Message' do
         it 'is a text message' do
-            msg = Weixin::TextMessage.from_xml(%(
+            msg = Weixin::Message.factory(%(
             <xml>
                 <ToUserName><![CDATA[to]]></ToUserName>
                 <FromUserName><![CDATA[from]]></FromUserName>
@@ -15,16 +16,17 @@ describe 'weixin/model' do
                 <MsgId>5842835709471227904</MsgId>
             </xml>
             ))
-            msg.msg_type.should == 'text'
-            msg.to_user_name.should == 'to'
-            msg.from_user_name.should == 'from'
-            msg.create_time.should == 1360391199
-            msg.content.should == 'Hello2BizUser'
-            msg.msg_id.should == 5842835709471227904
+            msg.class.should == Weixin::TextMessage
+            msg.MsgType.should == 'text'
+            msg.ToUserName.should == 'to'
+            msg.FromUserName.should == 'from'
+            msg.CreateTime.should == 1360391199
+            msg.Content.should == 'Hello2BizUser'
+            msg.MsgId.should == 5842835709471227904
         end
 
         it 'is a image message' do
-            msg = Weixin::ImageMessage.from_xml(%(
+            msg = Weixin::Message.factory(%(
             <xml>
                 <ToUserName><![CDATA[to]]></ToUserName>
                 <FromUserName><![CDATA[from]]></FromUserName>
@@ -34,16 +36,17 @@ describe 'weixin/model' do
                 <MsgId>5842835709471227904</MsgId>
             </xml>
             ))
-            msg.msg_type.should == 'image'
-            msg.to_user_name.should == 'to'
-            msg.from_user_name.should == 'from'
-            msg.create_time.should == 1360391199
-            msg.msg_id.should == 5842835709471227904
-            msg.pic_url.should_not nil
+            msg.class.should == Weixin::ImageMessage
+            msg.MsgType.should == 'image'
+            msg.ToUserName.should == 'to'
+            msg.FromUserName.should == 'from'
+            msg.CreateTime.should == 1360391199
+            msg.MsgId.should == 5842835709471227904
+            msg.PicUrl.should_not nil
         end
 
         it 'is a location message' do
-            msg = Weixin::LocationMessage.from_xml(%(
+            msg = Weixin::Message.factory(%(
             <xml>
                 <ToUserName><![CDATA[to]]></ToUserName>
                 <FromUserName><![CDATA[from]]></FromUserName>
@@ -56,15 +59,16 @@ describe 'weixin/model' do
                 <MsgId>5842835709471227904</MsgId>
             </xml>
             ))
-            msg.msg_type.should == 'location'
-            msg.to_user_name.should == 'to'
-            msg.from_user_name.should == 'from'
-            msg.create_time.should == 1360391199
-            msg.msg_id.should == 5842835709471227904
-            msg.label.should_not nil
-            msg.scale.should == 15
-            msg.location_x.should == 69.866013
-            msg.location_y.should == 136.269449
+            msg.class.should == Weixin::LocationMessage
+            msg.MsgType.should == 'location'
+            msg.ToUserName.should == 'to'
+            msg.FromUserName.should == 'from'
+            msg.CreateTime.should == 1360391199
+            msg.MsgId.should == 5842835709471227904
+            msg.Label.should_not nil
+            msg.Scale.should == 15
+            msg.Location_X.should == 69.866013
+            msg.Location_Y.should == 136.269449
         end
 
     end
@@ -73,25 +77,25 @@ describe 'weixin/model' do
 
         it 'is a text reply message' do
             msg = Weixin::TextReplyMessage.new
-            msg.to_user_name = 'to'
-            msg.from_user_name = 'from'
-            msg.content = 'blah'
-            msg.msg_type.should == 'text'
+            msg.ToUserName = 'to'
+            msg.FromUserName = 'from'
+            msg.Content = 'blah'
+            msg.MsgType.should == 'text'
         end
 
         it 'is a news reply message' do
             msg = Weixin::NewsReplyMessage.new
-            msg.to_user_name = 'to'
-            msg.from_user_name = 'from'
+            msg.ToUserName = 'to'
+            msg.FromUserName = 'from'
             item1 = Weixin::Item.new
-            item1.title = 'title1'
-            item1.description = 'blah'
+            item1.Title = 'title1'
+            item1.Description = 'blah'
             item2 = Weixin::Item.new
-            item2.title = 'title2'
-            item2.description = 'blah blah'
-            msg.articles = [item1, item2]
-            msg.article_count = 2
-            msg.msg_type.should == 'news'
+            item2.Title = 'title2'
+            item2.Description = 'blah blah'
+            msg.Articles = [item1, item2]
+            msg.ArticleCount = 2
+            msg.MsgType.should == 'news'
             #puts msg.to_xml
         end
 
