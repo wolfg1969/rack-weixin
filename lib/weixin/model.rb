@@ -43,10 +43,59 @@ module Weixin
 
     end
 
+    # <xml>
+    #     <ToUserName><![CDATA[toUser]]></ToUserName>
+    #     <FromUserName><![CDATA[fromUser]]></FromUserName> 
+    #     <CreateTime>1348831860</CreateTime>
+    #     <MsgType><![CDATA[text]]></MsgType>
+    #     <Content><![CDATA[this is a test]]></Content>
+    #     <MsgId>1234567890123456</MsgId>
+    # </xml>
     TextMessage = Class.new(Message)
+    
+    # <xml>
+    #     <ToUserName><![CDATA[toUser]]></ToUserName>
+    #     <FromUserName><![CDATA[fromUser]]></FromUserName>
+    #     <CreateTime>1348831860</CreateTime>
+    #     <MsgType><![CDATA[image]]></MsgType>
+    #     <PicUrl><![CDATA[this is a url]]></PicUrl>
+    #     <MsgId>1234567890123456</MsgId>
+    # </xml>
     ImageMessage = Class.new(Message)
+    
+    # <xml>
+    #   <ToUserName><![CDATA[toUser]]></ToUserName>
+    #   <FromUserName><![CDATA[fromUser]]></FromUserName>
+    #   <CreateTime>1351776360</CreateTime>
+    #   <MsgType><![CDATA[link]]></MsgType>
+    #   <Title><![CDATA[公众平台官网链接]]></Title>
+    #   <Description><![CDATA[公众平台官网链接]]></Description>
+    #   <Url><![CDATA[url]]></Url>
+    #   <MsgId>1234567890123456</MsgId>
+    # </xml> 
     LinkMessage = Class.new(Message)
+    
+    # <xml>
+    #     <ToUserName><![CDATA[toUser]]></ToUserName>
+    #     <FromUserName><![CDATA[FromUser]]></FromUserName>
+    #     <CreateTime>123456789</CreateTime>
+    #     <MsgType><![CDATA[event]]></MsgType>
+    #     <Event><![CDATA[EVENT]]></Event>
+    #     <EventKey><![CDATA[EVENTKEY]]></EventKey>
+    # </xml>
+    EventMessage = Class.new(Message)
 
+    # <xml>
+    #     <ToUserName><![CDATA[toUser]]></ToUserName>
+    #     <FromUserName><![CDATA[fromUser]]></FromUserName>
+    #     <CreateTime>1351776360</CreateTime>
+    #     <MsgType><![CDATA[location]]></MsgType>
+    #     <Location_X>23.134521</Location_X>
+    #     <Location_Y>113.358803</Location_Y>
+    #     <Scale>20</Scale>
+    #     <Label><![CDATA[位置信息]]></Label>
+    #     <MsgId>1234567890123456</MsgId>
+    # </xml> 
     class LocationMessage < Message
 
         def Location_X
@@ -59,21 +108,6 @@ module Weixin
 
         def Scale
             @source.Scale.to_i
-        end
-    end
-
-    class EventMessage < Message
-        
-        def Latitude
-            @source.Latitude.to_f
-        end
-
-        def Longitude
-            @source.Longitude.to_f
-        end
-
-        def Precision
-            @source.Precision.to_f
         end
     end
 

@@ -52,9 +52,8 @@ post '/your_app_root' do
     logger.info "message: #{request.env[Weixin::Middleware::WEIXIN_MSG_RAW]}"
 
     from = message.FromUserName
-    if message.class == Weixin::TextMessage
-        content = message.Content
-        if content == 'Hello2BizUser'
+    if message.class == Weixin::EventMessage
+        if message.Event == 'subscribe'
             reply_msg_content = "感谢关注！#{reply_msg_content}"
         end
     end
