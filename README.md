@@ -51,7 +51,7 @@ post '/your_app_root' do
     content_type :xml, 'charset' => 'utf-8'
 
     message = request.env[Weixin::Middleware::WEIXIN_MSG]
-    logger.info "message: #{request.env[Weixin::Middleware::WEIXIN_MSG_RAW]}"
+    logger.info "message: #{request.env[Weixin::Middleware::WEIXIN_MSG_RAW].string}"
 
     from = message.FromUserName
     if message.class == Weixin::EventMessage
