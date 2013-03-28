@@ -1,6 +1,8 @@
 微信公众平台 开放消息接口 Rack Middlware
 ========================================
 
+Latest version: v0.4.0, supports subscribe/unsubscribe event
+
 * 验证微信请求 with 'weixin/middleware'
 * 解析推送消息 with 'weixin/model'
 * 生成回复消息 with 'weixin/model'
