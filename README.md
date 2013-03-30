@@ -1,4 +1,4 @@
-微信公众平台 开放消息接口 Rack Middlware
+微信公众平台 开放消息接口 Rack Middleware
 ========================================
 
 Latest version: v0.4.0, supports subscribe/unsubscribe event
