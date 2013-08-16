@@ -170,7 +170,7 @@ module Weixin
 
     class NewsReplyMessage < ReplyMessage
         xml_accessor :ArticleCount, :as => Integer
-        xml_accessor :Articles, :as => [Item], :in => 'Articles', :from => 'Item'
+        xml_accessor :Articles, :as => [Item], :in => 'Articles', :from => 'item'
 
         def initialize
             super
