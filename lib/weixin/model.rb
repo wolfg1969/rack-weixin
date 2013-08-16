@@ -36,6 +36,10 @@ module Weixin
                 LinkMessage.new(hash)
             when 'event'
                 EventMessage.new(hash)
+            when 'voice'
+                VoiceMessage.new(hash)
+            when 'video'
+                VideoMessage.new(hash)
             else
                 raise ArgumentError, 'Unknown Message'
             end
@@ -108,6 +112,48 @@ module Weixin
 
         def Scale
             @source.Scale.to_i
+        end
+    end
+
+    # <xml>
+    #   <ToUserName><![CDATA[toUser]]></ToUserName>
+    #   <FromUserName><![CDATA[fromUser]]></FromUserName>
+    #   <CreateTime>1376632760</CreateTime>
+    #   <MsgType><![CDATA[voice]]></MsgType>
+    #   <MediaId><![CDATA[Qyb0tgux6QLjhL6ipvFZJ-kUt2tcQtkn0BU365Vt3wUAtqfGam4QpZU35RXVhv6G]]></MediaId>
+    #   <Format><![CDATA[amr]]></Format>
+    #   <MsgId>5912592682802219078</MsgId>
+    #   <Recognition><![CDATA[]]></Recognition>
+    # </xml>
+    class VoiceMessage < Message
+
+        def MediaId
+            @source.MediaId
+        end
+
+        def Format
+            @source.Format
+        end
+    end
+
+
+    # <xml>
+    #   <ToUserName><![CDATA[toUser]]></ToUserName>
+    #   <FromUserName><![CDATA[fromUser]]></FromUserName>
+    #   <CreateTime>1376632994</CreateTime>
+    #   <MsgType><![CDATA[video]]></MsgType>
+    #   <MediaId><![CDATA[TAAGb6iS5LcZR1d5ICiZTWGWi6-Upic9tlWDpAKcNJA]]></MediaId>
+    #   <ThumbMediaId><![CDATA[U-xulPW4kq6KKMWFNaBSPc65Bcgr7Qopwex0DfCeyQs]]></ThumbMediaId>
+    #   <MsgId>5912593687824566343</MsgId>
+    # </xml>
+    class VideoMessage < Message
+
+        def MediaId
+            @source.MediaId
+        end
+
+        def ThumbMediaId
+            @source.ThumbMediaId
         end
     end
 
