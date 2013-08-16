@@ -32,10 +32,10 @@ module Weixin
 
                 raw_msg = env[POST_BODY].read
                 begin
-                    env.update WEIXIN_MSG => Weixin::Message.factory(raw_msg), WEIXIN_MSG_RAW => env[POST_BODY]
+                    env.update WEIXIN_MSG => Weixin::Message.factory(raw_msg), WEIXIN_MSG_RAW => raw_msg
                     @app.call(env)
                 rescue Exception => e
-                    return [500, { 'Content-typ' => 'text/html' }, ["Message parsing error: #{e.to_s}"]]
+                    return [500, { 'Content-type' => 'text/html' }, ["Message parsing error: #{e.to_s}"]]
                 end
             else
                 @app.call(env)
