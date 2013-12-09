@@ -4,7 +4,8 @@ require 'weixin/middleware'
 require 'weixin/menu'
 
 module Weixin
-
+  autoload :Message,  'weixin/model'
+  
   autoload :Music, 'weixin/model'
   autoload :Item,  'weixin/model'
 
