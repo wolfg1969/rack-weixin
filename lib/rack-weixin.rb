@@ -2,17 +2,10 @@
 require 'weixin/version'
 require 'weixin/middleware'
 require 'weixin/menu'
+require 'weixin/model'
 
 module Weixin
-  autoload :Message,  'weixin/model'
   
-  autoload :Music, 'weixin/model'
-  autoload :Item,  'weixin/model'
-
-  autoload :TextReplyMessage,  'weixin/model'
-  autoload :MusicReplyMessage, 'weixin/model'
-  autoload :NewsReplyMessage,  'weixin/model'
-
   extend self
 
   def music(title, desc, music_url, hq_music_url)
@@ -33,7 +26,7 @@ module Weixin
     item
   end
 
-  def text_msg(from, to, content, flag=0)
+  def text_msg(from, to, content)
     msg = TextReplyMessage.new
     msg.ToUserName   = to
     msg.FromUserName = from
