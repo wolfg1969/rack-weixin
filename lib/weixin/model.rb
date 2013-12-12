@@ -169,7 +169,6 @@ module Weixin
 
         def initialize
             @CreateTime = Time.now.to_i
-            @FuncFlag = 0
         end
 
         def to_xml
