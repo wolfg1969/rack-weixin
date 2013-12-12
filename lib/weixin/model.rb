@@ -166,7 +166,6 @@ module Weixin
         xml_accessor :FromUserName, :cdata => true
         xml_reader :CreateTime, :as => Integer
         xml_reader :MsgType, :cdata => true
-        xml_accessor :FuncFlag, :as => Integer
 
         def initialize
             @CreateTime = Time.now.to_i
