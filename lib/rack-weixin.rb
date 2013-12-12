@@ -26,7 +26,7 @@ module Weixin
     item
   end
 
-  def text_msg(from, to, content, flag=0)
+  def text_msg(from, to, content)
     msg = TextReplyMessage.new
     msg.ToUserName   = to
     msg.FromUserName = from
