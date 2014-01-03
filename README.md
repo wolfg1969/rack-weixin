@@ -1,7 +1,7 @@
 微信公众平台 开放消息接口 Rack Middleware
 ========================================
 
-[![Gem Version](https://badge.fury.io/rb/rack-weixin.png)](http://badge.fury.io/rb/rack-weixin)
+[![Build Status](https://travis-ci.org/wolfg1969/rack-weixin.png?branch=master)](https://travis-ci.org/wolfg1969/rack-weixin) [![Gem Version](https://badge.fury.io/rb/rack-weixin.png)](http://badge.fury.io/rb/rack-weixin)
 
 * 验证微信请求 with 'weixin/middleware'
 * 解析推送消息 with 'weixin/model'
