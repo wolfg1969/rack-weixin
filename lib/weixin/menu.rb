@@ -45,7 +45,7 @@ module Weixin
 
     def authenticate
       url = "#{@endpoint}/token"
-      request = Nestful.get url, { grant_type: 'client_credential', appid: @api, secret: @key } rescue nil
+      request = Nestful.get url, { :grant_type => 'client_credential', :appid => @api, :secret => @key } rescue nil
       unless request.nil?
         auth = MultiJson.load(request.body)
         unless auth.has_key?('errcode')
