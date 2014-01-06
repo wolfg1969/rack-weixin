@@ -27,4 +27,5 @@ Gem::Specification.new do |s|
 
     s.homepage = 'https://github.com/wolfg1969/rack-weixin'
     s.require_paths = %w[lib]
+    s.required_ruby_version = '>= 1.8.6'
 end
