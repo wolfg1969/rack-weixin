@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-weixin (0.0.4.2)
+    rack-weixin (0.0.4.3)
       multi_json (>= 1.7.9)
       multi_xml (>= 0.5.2)
       nestful
@@ -9,6 +9,7 @@ PATH
       roxml
 
 GEM
+  remote: https://rubygems.org/
   remote: http://ruby.taobao.org/
   specs:
     activesupport (3.2.12)
