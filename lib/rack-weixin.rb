@@ -2,6 +2,8 @@
 require 'weixin/version'
 require 'weixin/middleware'
 require 'weixin/menu'
+require 'weixin/user'
+require 'weixin/client'
 require 'weixin/model'
 
 module Weixin
