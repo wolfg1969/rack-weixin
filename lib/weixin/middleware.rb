@@ -44,14 +44,24 @@ module Weixin
         end
 
         def invalid_request!
-            [401, { 'Content-type' => 'text/html', 'Content-Length' => '0'}, []]
+            self.class.invalid_request!
+
         end
+        
+        def self.invalid_request!
+            [401, { 'Content-type' => 'text/html', 'Content-Length' => '0'}, []]
+        end       
 
         def request_is_valid?
+
+            self.class.request_is_valid?(@app_token, @req.params)
+        end        
+
+        def self.request_is_valid?(app_token, params)
             begin
-                param_array = [@app_token, @req.params['timestamp'], @req.params['nonce']]
+                param_array = [app_token, params['timestamp'], params['nonce']]
                 sign = Digest::SHA1.hexdigest( param_array.sort.join )
-                sign == @req.params['signature'] ? true : false
+                sign == params['signature'] ? true : false
             rescue
                 false
             end
