@@ -88,6 +88,135 @@ end
 	end
 
 
+### Rack和Rails ActionController配合下使用
+
+``` ruby
+class WeixinController < ActionController::Base
+
+  def index
+    params[:echostr]
+  end
+
+  def create
+
+    xml_message = request.env[Weixin::Middleware::WEIXIN_MSG]
+
+    raw_message = request.env[Weixin::Middleware::WEIXIN_MSG_RAW]
+
+    Rails.logger.debug "raw_message = " do
+      raw_message
+    end
+
+    if xml_message.present?
+      response_xml = msg_router(xml_message)
+
+      Rails.logger.info "Weixin response_xml = " do
+        response_xml
+      end
+
+    end
+
+    if response_xml.present?
+      render xml: response_xml
+    else
+      render :nothing => true, :status => 200, :content_type => 'text/html'
+    end
+
+  end
+
+  def msg_router(msg)
+    case msg.MsgType
+      when 'text'
+        text_parse(msg)
+      when 'image'
+        image_parse(msg)
+      when 'location'
+        location_parse(msg)
+      when 'link'
+        link_parse(msg)
+      when 'event'
+        event_parse(msg)
+      when 'voice'
+        voice_parse(msg)
+      when 'video'
+        video_parse(msg)
+      else
+    end
+
+  end
+
+end
+```
+
+### Rails ActionController的filter验证消息，适合接入多个微信公众号
+
+``` ruby
+class WeixinController < ActionController::Base
+
+  before_filter :check_signature
+
+  def index
+    render :text => params[:echostr]
+  end
+
+  def create
+
+    raw_msg = env[Weixin::Middleware::POST_BODY].read
+
+    begin
+
+      env.update Weixin::Middleware::WEIXIN_MSG => Weixin::Message.factory(raw_msg), Weixin::Middleware::WEIXIN_MSG_RAW => raw_msg
+
+
+    rescue Exception => e
+      message = "weixin post message error!"
+      Rails.logger.error "#{message} params = " do
+        params
+      end
+
+      ExceptionLogger.log_to_all(e, {message: message, env: env, session: session})
+    end
+
+    create_to_response
+
+  end
+
+  private
+
+  def check_signature
+
+
+    fullpath = "#{request.protocol + request.host_with_port + request.path}"
+
+    Rails.logger.debug "fullpath = " do
+      fullpath
+    end
+
+    # 根据fullpath查询不同的token
+    # token = query_token_by_fullpath(fullpath)
+
+    Rails.logger.debug "token = " do
+      token
+    end
+
+    if token.present? && Weixin::Middleware.request_is_valid?(token, params)
+
+
+    else
+
+      Rails.logger.error "token is null or request_is_valid! params = " do
+        params
+      end
+
+      render :status => 401
+
+    end
+
+  end
+
+
+end
+```
 
 TODO
 ----
