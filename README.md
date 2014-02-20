@@ -148,6 +148,8 @@ class WeixinController < ActionController::Base
 end
 ```
 
+### Rails ActionController的filter验证消息，适合接入多个微信公众号
+
 ``` ruby
 class WeixinController < ActionController::Base
 
@@ -191,7 +193,7 @@ class WeixinController < ActionController::Base
     end
 
     # 根据fullpath查询不同的token
-    token = query_token_by_fullpath(fullpath)
+    # token = query_token_by_fullpath(fullpath)
 
     Rails.logger.debug "token = " do
       token
