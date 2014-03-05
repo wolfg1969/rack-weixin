@@ -6,6 +6,8 @@ module Weixin
  
   class Client
 
+    attr_accessor :api, :key, :access_token, :expired_at, :endpoint
+
     def initialize(api, key, access_token = nil, expired_at = nil)
       @api = api
       @key = key
@@ -49,8 +51,12 @@ module Weixin
       User.new(@api, @key, get_access_token, @expired_at, @endpoint)
     end 
 
-    # def menu
-    #   Menu.new(@api, @key)
-    # end     
+    def menu
+      Menu.new(@api, @key)
+    end     
+
+    def message_custom
+      MessageCustom.new(@api, @key, get_access_token, @expired_at, @endpoint)
+    end      
   end
 end

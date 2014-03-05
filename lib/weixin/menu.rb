@@ -35,7 +35,7 @@ module Weixin
     end
 
     def add(menu)
-      request = Nestful::Connection.new(gw_url('create')).post(gw_path('create'), MultiJson.dump(menu)) rescue nil
+      request = Nestful::Connection.new(endpoint).post("/cgi-bin#{gw_path('create')}", MultiJson.dump(message)) rescue nil
       unless request.nil?
         errcode = MultiJson.load(request.body)['errcode']
         return true if errcode == 0

@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
 require 'weixin/version'
 require 'weixin/middleware'
+require 'weixin/api'
 require 'weixin/menu'
 require 'weixin/user'
+require 'weixin/message_custom'
 require 'weixin/client'
 require 'weixin/model'
 
