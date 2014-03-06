@@ -32,19 +32,23 @@ module Weixin
       @expired_at
     end
 
-    def authenticate
-      url = "#{@endpoint}/token"
-      request = Nestful.get url, { :grant_type => 'client_credential', :appid => @api, :secret => @key } rescue nil
+    def self.authenticate(endpoint, api, key)
+      url = "#{endpoint}/token"
+      request = Nestful.get url, { :grant_type => 'client_credential', :appid => api, :secret => key } rescue nil
       unless request.nil?
         auth = MultiJson.load(request.body)
         unless auth.has_key?('errcode')
-          @access_token = auth['access_token']
-          @expired_at   = Time.now + auth['expires_in'].to_i
+          access_token = auth['access_token']
+          expired_at   = Time.now + auth['expires_in'].to_i
         end
-        
+
       end
 
-      return @access_token, @expired_at
+      return access_token, expired_at
+    end
+
+    def authenticate
+      @access_token, @expired_at = self.class.authenticate(@endpoint, @api, @key)
     end   
 
     def user

@@ -440,6 +440,74 @@ client.message_custom.send(message)
 
 ```
 
+
+
+
+
+[自定义菜单创建接口](http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%88%9B%E5%BB%BA%E6%8E%A5%E5%8F%A3)
+``` ruby
+menu_string = <<STRING
+ {
+     "button":[
+     {  
+          "type":"click",
+          "name":"今日歌曲",
+          "key":"V1001_TODAY_MUSIC"
+      },
+      {
+           "type":"click",
+           "name":"歌手简介",
+           "key":"V1001_TODAY_SINGER"
+      },
+      {
+           "name":"菜单",
+           "sub_button":[
+           {  
+               "type":"view",
+               "name":"搜索",
+               "url":"http://www.soso.com/"
+            },
+            {
+               "type":"view",
+               "name":"视频",
+               "url":"http://v.qq.com/"
+            },
+            {
+               "type":"click",
+               "name":"赞一下我们",
+               "key":"V1001_GOOD"
+            }]
+       }]
+ }
+STRING
+
+menu_hash = JSON.parse(menu_string)
+
+menu_hash = {"button"=>[{"type"=>"click", "name"=>"今日歌曲", "key"=>"V1001_TODAY_MUSIC"}, {"type"=>"click", "name"=>"歌手简介", "key"=>"V1001_TODAY_SINGER"}, {"name"=>"菜单", "sub_button"=>[{"type"=>"view", "name"=>"搜索", "url"=>"http://www.soso.com/"}, {"type"=>"view", "name"=>"视频", "url"=>"http://v.qq.com/"}, {"type"=>"click", "name"=>"赞一下我们", "key"=>"V1001_GOOD"}]}]} 
+
+menu.add(menu_hash)
+```
+
+
+
+[自定义菜单查询接口](http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E6%9F%A5%E8%AF%A2%E6%8E%A5%E5%8F%A3)
+
+``` ruby
+menu = Weixin::Menu.new('your_weixin_app_key', 'your_weixin_app_secret')
+
+menu.get
+```
+
+
+
+[自定义菜单删除接口](http://mp.weixin.qq.com/wiki/index.php?title=%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95%E5%88%A0%E9%99%A4%E6%8E%A5%E5%8F%A3)
+
+``` ruby
+menu.delete
+```
+
+
+
 TODO
 ----
 
