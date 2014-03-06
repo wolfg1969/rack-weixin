@@ -8,7 +8,7 @@ module Weixin
     def initialize(api, key)
       @api = api
       @key = key
-      
+
       @access_token = nil
       @expired_at   = Time.now
       @endpoint     = 'https://api.weixin.qq.com/cgi-bin'
@@ -35,7 +35,16 @@ module Weixin
     end
 
     def add(menu)
-      request = Nestful::Connection.new(endpoint).post("/cgi-bin#{gw_path('create')}", MultiJson.dump(message)) rescue nil
+      request = Nestful::Connection.new(@endpoint).post("/cgi-bin#{gw_path('create')}", MultiJson.dump(menu)) #rescue nil
+      unless request.nil?
+        errcode = MultiJson.load(request.body)['errcode']
+        return true if errcode == 0
+      end
+      false
+    end
+
+    def delete
+      request = Nestful.get gw_url('delete') #rescue nil
       unless request.nil?
         errcode = MultiJson.load(request.body)['errcode']
         return true if errcode == 0
